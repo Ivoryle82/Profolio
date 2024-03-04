@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+
+body {
+    font-family: 'Cinzel', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('Photos/image2.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    min-height: 100vh;
+    position: relative;
+}
+
+header {
+    background-color: #000;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.main-content {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack items vertically */
+    height: 100vh; /* Full height of viewport */
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    padding-bottom: 50px;
+}
+
+.intro {
+    font-family: 'Proxima Nova', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px; /* Reduce the bottom margin */
+}
+
+h1 {
+    font-family: 'Cinzel', sans-serif;
+    font-size: 100px; /* Increase the font size */
+    margin-top: 10px; /* Reduce the top margin */
+}
+
+footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
