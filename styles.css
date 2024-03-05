@@ -96,7 +96,7 @@ footer {
 
 
 .about-text {
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:'Proxima Nova', sans-serif;
     flex: 1 1 auto; /* Allow to grow and shrink */
     text-align: left; /* Align text to the left */
     padding-left: 40px; 

@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>quamatbong</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for the animation */
+        @keyframes slideInFromBottom {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .main-content h1 {
+            animation: slideInFromBottom 1s ease-out; /* Adjust animation duration and timing function as needed */
+        }
+    </style>
 </head>
 <body>
 
@@ -23,14 +38,13 @@
 
 <main class="main-content">
     <p class="intro">Based in Hanoi since 2004</p>
-    <h1>Ivory Le</h1>
+    <h1 class="ivory-le">Ivory Le</h1>
 </main>
 
 <footer>
     <p>&copy; 2024 quamatbong.</p>
     <p>All rights reserved.</p>
 </footer>
-
 
 </body>
 </html>
