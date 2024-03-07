@@ -14,7 +14,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="workspace.html">My Photos</a></li>
+                <li><a href="myphotos.html">My Photos</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
@@ -22,8 +22,8 @@
     </div>
 </header>
 
-<main class="main-content" style="padding-bottom: 100px;">
-    <h1>My Spotify Playlist</h1>
+<main class="main-content" style="padding-bottom: 50px;">
+    <h1 style="margin-bottom: 10px;">My Spotify Playlist</h1>
     <!-- Embed Spotify Playlist -->
     <iframe
       title="Hibiki 30s"
@@ -34,6 +34,11 @@
       allowtransparency="true"
       allow="encrypted-media"
     ></iframe>
+
+    <!-- Prompt and button to connect on Spotify -->
+    <div class="spotify-connect" style="margin-top: 20px; margin-bottom: 20px;"></div>
+        <a href="https://accounts.spotify.com/authorize?client_id=b4c01840ec424a1aa275703fc29b8fac&response_type=code&redirect_uri=https://ivoryle82.github.io/myspotify.html&scope=user-read-private%20user-read-email" class="spotify-button">Let's connect on Spotify</a>
+    </div>
 </main>
 
 <footer>
