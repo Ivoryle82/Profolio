@@ -1,16 +1,30 @@
-// Define global variable for the token
-let spotifyToken = null;
-
 async function handleSpotifyButtonClick() {
     const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
+
+    // Redirect the user to Spotify authorization flow
+    redirectToAuthCodeFlow(clientId);
+}
+
+// Redirect to Spotify authentication flow
+function redirectToAuthCodeFlow(clientId) {
+    const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
+    const scope = encodeURIComponent("user-read-private user-read-email");
+    const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
+    const codeChallenge = generateCodeChallenge(128);
+
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
+
+    window.location.href = authUrl; // Redirect the user to the authorization URL
+}
+
+// On page load, check if there is an authorization code in the URL
+window.addEventListener('load', async () => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
 
-    if (!code) {
-        // If no authorization code is present, show a popup informing the user
-        alert("No authorization code found. Please try again.");
-        redirectToAuthCodeFlow(clientId);
-    } else {
+    if (code) {
+        // If an authorization code is found, proceed with obtaining the access token
+        const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
         const accessToken = await getAccessToken(clientId, code);
         spotifyToken = accessToken; // Assign the token to the global variable
         const profile = await fetchProfile(accessToken);
@@ -19,7 +33,10 @@ async function handleSpotifyButtonClick() {
         await displayTopTracks();
         await createPlaylist();
     }
-}
+});
+
+// Define global variable for the token
+let spotifyToken = null;
 
 // Function to make API requests to Spotify
 async function fetchWebApi(endpoint, method, body) {
@@ -107,20 +124,6 @@ async function createPlaylist() {
         console.error("Error creating playlist:", error);
     }
 }
-
-// Redirect to Spotify authentication flow
-function redirectToAuthCodeFlow(clientId) {
-    const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
-    const scope = encodeURIComponent("user-read-private user-read-email");
-    const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
-    const codeChallenge = generateCodeChallenge(128);
-
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
-
-    window.location.href = authUrl; // Redirect the user to the authorization URL
-}
-// Add an event listener to the Spotify button to trigger the handleSpotifyButtonClick function
-document.getElementById("spotify-button").addEventListener("click", handleSpotifyButtonClick);
 
 // Display user profile information
 function populateUI(profile) {
