@@ -1,11 +1,15 @@
-async function handleSpotifyButtonClick() {
-    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
-    // Redirect the user to Spotify authorization flow
-    redirectToAuthCodeFlow(clientId);
+// Define global variable for the token
+let spotifyToken = null;
+
+// Add an event listener to the login button
+const spotifyLoginButton = document.getElementById("spotify-login-button");
+if (spotifyLoginButton) {
+    spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
 }
 
-// Redirect to Spotify authentication flow
-function redirectToAuthCodeFlow(clientId) {
+// Function to handle the Spotify authorization flow
+function redirectToAuthCodeFlow() {
+    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
     const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
     const scope = encodeURIComponent("user-read-private user-read-email");
     const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
@@ -16,8 +20,8 @@ function redirectToAuthCodeFlow(clientId) {
     window.location.href = authUrl; // Redirect the user to the authorization URL
 }
 
-// On page load, check if there is an authorization code in the URL
-window.addEventListener('load', async () => {
+// Function to handle obtaining access token and fetching user profile
+async function handleAccessToken() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
 
@@ -28,14 +32,17 @@ window.addEventListener('load', async () => {
         spotifyToken = accessToken; // Assign the token to the global variable
         const profile = await fetchProfile(accessToken);
         populateUI(profile);
-        // Fetch top tracks and create a playlist
-        await displayTopTracks();
+        // Create a playlist
         await createPlaylist();
     }
-});
+}
 
-// Define global variable for the token
-let spotifyToken = null;
+// On page load, handle obtaining access token and fetching user profile
+window.addEventListener('load', () => {
+    if (window.location.pathname === "/compatibility.html") {
+        handleAccessToken();
+    }
+});
 
 // Function to make API requests to Spotify
 async function fetchWebApi(endpoint, method, body) {
@@ -65,45 +72,10 @@ async function fetchProfile(token) {
     }
 }
 
-// Fetch user's top tracks
-async function fetchTopTracks() {
-    try {
-        const response = await fetchWebApi(
-            'v1/me/top/tracks?time_range=long_term&limit=5', 'GET'
-        );
-        return response.items;
-    } catch (error) {
-        console.error("Error fetching top tracks:", error);
-        throw error;
-    }
-}
-
-// Display user profile information
-function populateUI(profile) {
-    // Populate UI with profile data
-    console.log("User Profile:", profile);
-    // Example: Update HTML elements with profile data
-}
-
-// Display top tracks
-async function displayTopTracks() {
-    try {
-        const topTracks = await fetchTopTracks();
-        console.log("Top Tracks:", topTracks);
-        // Example: Update HTML elements with top tracks data
-    } catch (error) {
-        console.error("Error displaying top tracks:", error);
-    }
-}
-
 // Create a playlist with user's top tracks
 async function createPlaylist() {
     try {
-        // Fetch user's top tracks
-        const topTracks = await fetchTopTracks();
-        // Extract URIs of top tracks
-        const tracksUri = topTracks.map(track => track.uri);
-        // Create playlist with user's top tracks
+        // Create playlist with the name and description
         const playlist = await fetchWebApi(
             `v1/me/playlists`, 'POST', {
                 "name": "Your Top Tracks Playlist",
@@ -112,19 +84,13 @@ async function createPlaylist() {
                 "collaborative": false
             }
         );
-        // Add top tracks to the playlist
-        await fetchWebApi(
-            `v1/playlists/${playlist.id}/tracks`, 'POST', {
-                "uris": tracksUri
-            }
-        );
         console.log("Playlist created:", playlist);
     } catch (error) {
         console.error("Error creating playlist:", error);
     }
 }
 
-// Display user profile information
+// Function to populate user profile information
 function populateUI(profile) {
     // Populate UI with profile data
     document.getElementById("displayName").innerText = profile.display_name;
@@ -140,19 +106,4 @@ function populateUI(profile) {
     document.getElementById("url").innerText = profile.href;
     document.getElementById("url").setAttribute("href", profile.href);
     document.getElementById("imgUrl").innerText = profile.images[0]?.url ?? '(no profile image)';
-}
-
-// Display top tracks
-async function displayTopTracks() {
-    try {
-        const topTracks = await fetchTopTracks();
-        const topSongsContainer = document.getElementById("top-songs");
-        topTracks.forEach(track => {
-            const trackElement = document.createElement("p");
-            trackElement.innerText = `${track.name} by ${track.artists.map(artist => artist.name).join(', ')}`;
-            topSongsContainer.appendChild(trackElement);
-        });
-    } catch (error) {
-        console.error("Error displaying top tracks:", error);
-    }
 }
