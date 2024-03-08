@@ -1,6 +1,5 @@
 async function handleSpotifyButtonClick() {
     const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
-
     // Redirect the user to Spotify authorization flow
     redirectToAuthCodeFlow(clientId);
 }
