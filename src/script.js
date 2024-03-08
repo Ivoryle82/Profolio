@@ -17,7 +17,10 @@ function redirectToAuthCodeFlow() {
 
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
 
-    window.location.href = authUrl; // Redirect the user to the authorization URL
+    const spotifyLoginButton = document.getElementById("spotify-login-button");
+    if (spotifyLoginButton) {
+        spotifyLoginButton.setAttribute("href", authUrl);
+    }
 }
 
 // Function to handle obtaining access token and fetching user profile
