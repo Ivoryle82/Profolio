@@ -1,14 +1,18 @@
 // Define global variable for the token
 let spotifyToken = null;
 
-// Add an event listener to the login button
-const spotifyLoginButton = document.getElementById("spotify-login-button");
-if (spotifyLoginButton) {
-    console.log("Found Spotify login button:", spotifyLoginButton);
-    spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
-} else {
-    console.log("Spotify login button not found!");
+function addEventListenerToLoginButton() {
+    const spotifyLoginButton = document.getElementById("spotify-login-button");
+    if (spotifyLoginButton) {
+        console.log("Found Spotify login button:", spotifyLoginButton);
+        spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
+    } else {
+        console.log("Spotify login button not found!");
+    }
 }
+
+// Call the function to add event listener to the login button
+addEventListenerToLoginButton();
 
 // Function to handle the Spotify authorization flow
 function redirectToAuthCodeFlow() {
@@ -18,7 +22,6 @@ function redirectToAuthCodeFlow() {
     const scope = encodeURIComponent("user-read-private user-read-email");
     const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
     const codeChallenge = generateCodeChallenge(128);
-
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
 
     window.location.href = authUrl; // Redirect the user to the authorization URL
@@ -33,7 +36,7 @@ async function handleAccessToken() {
     if (code) {
         // If an authorization code is found, proceed with obtaining the access token
         const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
-        const accessToken = await getAccessToken(clientId, code);
+        const accessToken = await getAccessToken(clientId, code); // you lost this !!!!
         spotifyToken = accessToken; // Assign the token to the global variable
         const profile = await fetchProfile(accessToken);
         populateUI(profile);
@@ -41,6 +44,42 @@ async function handleAccessToken() {
         await createPlaylist();
     }
 }
+
+// Function to get the access token
+async function getAccessToken(clientId, code) {
+    // Retrieve the code verifier from localStorage
+    let codeVerifier = localStorage.getItem('code_verifier');
+  
+    // Define the necessary parameters for the request
+    const payload = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        client_id: clientId,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: redirectUri, // Ensure you have defined redirectUri somewhere
+        code_verifier: codeVerifier,
+      }),
+    };
+  
+    // Perform the fetch request to get the access token
+    const response = await fetch(url, payload);
+    
+    // Parse the response as JSON
+    const responseData = await response.json();
+  
+    // Extract and return the access token from the response
+    const accessToken = responseData.access_token;
+  
+    // Store the access token in localStorage for future use
+    localStorage.setItem('access_token', accessToken);
+  
+    return accessToken;
+  }
+  
 
 // On page load, handle obtaining access token and fetching user profile
 window.addEventListener('load', () => {
