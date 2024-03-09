@@ -1,76 +1,53 @@
 // Define global variable for the token
 let spotifyToken = null;
 
-function addEventListenerToLoginButton() {
-    const spotifyLoginButton = document.getElementById("spotify-login-button");
-    if (spotifyLoginButton) {
-        console.log("Found Spotify login button:", spotifyLoginButton);
-        spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
-    } else {
-        console.log("Spotify login button not found!");
-    }
-}
-
-// Call the function to add event listener to the login button
-addEventListenerToLoginButton();
-
-// Function to handle the Spotify authorization flow
-function redirectToAuthCodeFlow() {
-    console.log("Redirecting to Spotify authorization flow...");
-    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; 
-    const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
-    const scope = encodeURIComponent("user-read-private user-read-email");
-    const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
-    const codeChallenge = generateCodeChallenge(128);
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
-
-    window.location.href = authUrl; // Redirect the user to the authorization URL
-}
-
 // Function to get the access token
-async function getAccessToken(clientId, code) {
+async function getAccessToken(clientId, code, redirectUri) {
     // Retrieve the code verifier from localStorage
     let codeVerifier = localStorage.getItem('code_verifier');
-  
+
     // Define the necessary parameters for the request
     const payload = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        client_id: clientId,
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: redirectUri, // Ensure you have defined redirectUri somewhere
-        code_verifier: codeVerifier,
-      }),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: clientId,
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: redirectUri,
+            code_verifier: codeVerifier,
+        }),
     };
-  
+
     // Perform the fetch request to get the access token
+    const url = 'https://accounts.spotify.com/api/token'; // Update the URL for token exchange
     const response = await fetch(url, payload);
-    
+
     // Parse the response as JSON
     const responseData = await response.json();
-  
+
     // Extract and return the access token from the response
     const accessToken = responseData.access_token;
-  
+
     // Store the access token in localStorage for future use
     localStorage.setItem('access_token', accessToken);
-  
+
     return accessToken;
-  }
-  
+}
+
+
 // Function to handle obtaining access token and fetching user profile
 async function handleAccessToken() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
+    const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
 
     if (code) {
         // If an authorization code is found, proceed with obtaining the access token
         const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
-        const accessToken = await getAccessToken(clientId, code); // you lost this !!!!
+        const accessToken = await getAccessToken(clientId, code, redirectUri);
         spotifyToken = accessToken; // Assign the token to the global variable
         const profile = await fetchProfile(accessToken);
         populateUI(profile);
@@ -79,14 +56,6 @@ async function handleAccessToken() {
     }
 }
 
-  
-
-// On page load, handle obtaining access token and fetching user profile
-window.addEventListener('load', () => {
-    if (window.location.pathname === "/compatibility.html") {
-        handleAccessToken();
-    }
-});
 
 // Function to make API requests to Spotify
 async function fetchWebApi(endpoint, method, body) {
@@ -151,3 +120,44 @@ function populateUI(profile) {
     document.getElementById("url").setAttribute("href", profile.href);
     document.getElementById("imgUrl").innerText = profile.images[0]?.url ?? '(no profile image)';
 }
+
+// Function to handle the Spotify authorization flow
+function redirectToAuthCodeFlow() {
+    console.log("Redirecting to Spotify authorization flow...");
+    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; 
+    const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
+    const scope = encodeURIComponent("user-read-private user-read-email");
+    const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
+    const codeChallenge = generateCodeChallenge(128);
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
+
+    window.location.href = authUrl; // Redirect the user to the authorization URL
+}
+
+// Function to generate code challenge
+function generateCodeChallenge() {
+    // You can implement your code challenge generation logic here
+    // For simplicity, I'm returning a dummy value
+    return "dummy_code_challenge";
+}
+
+// Add an event listener to the login button
+function addEventListenerToLoginButton() {
+    const spotifyLoginButton = document.getElementById("spotify-login-button");
+    if (spotifyLoginButton) {
+        console.log("Found Spotify login button:", spotifyLoginButton);
+        spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
+    } else {
+        console.log("Spotify login button not found!");
+    }
+}
+
+// Call the function to add event listener to the login button
+addEventListenerToLoginButton();
+
+// On page load, handle obtaining access token and fetching user profile
+window.addEventListener('load', () => {
+    if (window.location.pathname === "/compatibility.html") {
+        handleAccessToken();
+    }
+});
