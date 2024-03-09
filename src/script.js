@@ -27,24 +27,6 @@ function redirectToAuthCodeFlow() {
     window.location.href = authUrl; // Redirect the user to the authorization URL
 }
 
-
-// Function to handle obtaining access token and fetching user profile
-async function handleAccessToken() {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
-
-    if (code) {
-        // If an authorization code is found, proceed with obtaining the access token
-        const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
-        const accessToken = await getAccessToken(clientId, code); // you lost this !!!!
-        spotifyToken = accessToken; // Assign the token to the global variable
-        const profile = await fetchProfile(accessToken);
-        populateUI(profile);
-        // Create a playlist
-        await createPlaylist();
-    }
-}
-
 // Function to get the access token
 async function getAccessToken(clientId, code) {
     // Retrieve the code verifier from localStorage
@@ -79,6 +61,24 @@ async function getAccessToken(clientId, code) {
   
     return accessToken;
   }
+  
+// Function to handle obtaining access token and fetching user profile
+async function handleAccessToken() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (code) {
+        // If an authorization code is found, proceed with obtaining the access token
+        const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
+        const accessToken = await getAccessToken(clientId, code); // you lost this !!!!
+        spotifyToken = accessToken; // Assign the token to the global variable
+        const profile = await fetchProfile(accessToken);
+        populateUI(profile);
+        // Create a playlist
+        await createPlaylist();
+    }
+}
+
   
 
 // On page load, handle obtaining access token and fetching user profile
