@@ -4,12 +4,16 @@ let spotifyToken = null;
 // Add an event listener to the login button
 const spotifyLoginButton = document.getElementById("spotify-login-button");
 if (spotifyLoginButton) {
+    console.log("Found Spotify login button:", spotifyLoginButton);
     spotifyLoginButton.addEventListener("click", redirectToAuthCodeFlow);
+} else {
+    console.log("Spotify login button not found!");
 }
 
 // Function to handle the Spotify authorization flow
 function redirectToAuthCodeFlow() {
-    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
+    console.log("Redirecting to Spotify authorization flow...");
+    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; 
     const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
     const scope = encodeURIComponent("user-read-private user-read-email");
     const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
@@ -17,11 +21,9 @@ function redirectToAuthCodeFlow() {
 
     const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
 
-    const spotifyLoginButton = document.getElementById("spotify-login-button");
-    if (spotifyLoginButton) {
-        spotifyLoginButton.setAttribute("href", authUrl);
-    }
+    window.location.href = authUrl; // Redirect the user to the authorization URL
 }
+
 
 // Function to handle obtaining access token and fetching user profile
 async function handleAccessToken() {
