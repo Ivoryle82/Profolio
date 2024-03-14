@@ -3,10 +3,13 @@ let spotifyToken = null;
 
 // Function to get the access token
 async function getAccessToken(clientId, code, redirectUri) {
-    // Retrieve the code verifier from localStorage
+    // Retrieve code verifier from local storage
     let codeVerifier = localStorage.getItem('code_verifier');
 
-    // Define the necessary parameters for the request
+    // Define endpoint URL
+    const url = 'https://accounts.spotify.com/api/token';
+
+    // Define payload for POST request
     const payload = {
         method: 'POST',
         headers: {
@@ -21,41 +24,46 @@ async function getAccessToken(clientId, code, redirectUri) {
         }),
     };
 
-    // Perform the fetch request to get the access token
-    const url = 'https://accounts.spotify.com/api/token'; // Update the URL for token exchange
-    const response = await fetch(url, payload);
+    try {
+        // Send POST request to token endpoint
+        const response = await fetch(url, payload);
 
-    // Parse the response as JSON
-    const responseData = await response.json();
+        // Check if response is successful
+        if (!response.ok) {
+            throw new Error('Failed to obtain access token');
+        }
 
-    // Extract and return the access token from the response
-    const accessToken = responseData.access_token;
+        // Parse response body as JSON
+        const responseBody = await response.json();
 
-    // Store the access token in localStorage for future use
-    localStorage.setItem('access_token', accessToken);
+        // Store access token in local storage
+        localStorage.setItem('access_token', responseBody.access_token);
 
-    return accessToken;
+        // Optionally return the access token
+        return responseBody.access_token;
+    } catch (error) {
+        console.error('Error obtaining access token:', error);
+        throw error; // Rethrow error for handling by caller
+    }
 }
-
 
 // Function to handle obtaining access token and fetching user profile
 async function handleAccessToken() {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
     const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
+    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
 
     if (code) {
         // If an authorization code is found, proceed with obtaining the access token
-        const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
         const accessToken = await getAccessToken(clientId, code, redirectUri);
         spotifyToken = accessToken; // Assign the token to the global variable
-        const profile = await fetchProfile(accessToken);
+        const profile = await fetchProfile();
         populateUI(profile);
         // Create a playlist
         await createPlaylist();
     }
 }
-
 
 // Function to make API requests to Spotify
 async function fetchWebApi(endpoint, method, body) {
@@ -75,7 +83,7 @@ async function fetchWebApi(endpoint, method, body) {
 }
 
 // Fetch user profile data
-async function fetchProfile(token) {
+async function fetchProfile() {
     try {
         const response = await fetchWebApi('v1/me', 'GET');
         return response;
@@ -124,7 +132,7 @@ function populateUI(profile) {
 // Function to handle the Spotify authorization flow
 function redirectToAuthCodeFlow() {
     console.log("Redirecting to Spotify authorization flow...");
-    const clientId = "b4c01840ec424a1aa275703fc29b8fac"; 
+    const clientId = "b4c01840ec424a1aa275703fc29b8fac";
     const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
     const scope = encodeURIComponent("user-read-private user-read-email");
     const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
@@ -161,3 +169,4 @@ window.addEventListener('load', () => {
         handleAccessToken();
     }
 });
+``
