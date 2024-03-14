@@ -1,18 +1,29 @@
 // Define global variable for the token
 let spotifyToken = null;
 
+// Function to generate a random string
+function generateRandomString(length) {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 // Function to get the access token
-async function getAccessToken(code) {
+async function getAccessToken(code, clientId, redirectUri) {
     try {
-        // Retrieve code verifier from local storage
-        let codeVerifier = localStorage.getItem('code_verifier');
-        
-        // Log code verifier to ensure it's retrieved correctly
-        console.log('Code verifier:', codeVerifier);
-    
+        // Generate a random code verifier
+        const codeVerifier = generateRandomString(128);
+
+        // Encode the code verifier to Base64 URL-safe format
+        const codeChallenge = await sha256(codeVerifier);
+
         // Define endpoint URL
         const url = 'https://accounts.spotify.com/api/token';
-    
+
         // Define payload for POST request
         const payload = {
             method: 'POST',
@@ -20,22 +31,16 @@ async function getAccessToken(code) {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                client_id: 'b4c01840ec424a1aa275703fc29b8fac', // Replace with your client ID
+                client_id: clientId,
                 grant_type: 'authorization_code',
                 code,
-                redirect_uri: redirectUri, // Replace with your redirect URI
+                redirect_uri: redirectUri,
                 code_verifier: codeVerifier,
             }),
         };
-        
-        // Log payload before sending request
-        console.log('Request payload:', payload);
 
         // Send POST request to token endpoint
         const response = await fetch(url, payload);
-        
-        // Log response status to ensure request was successful
-        console.log('Response status:', response.status);
 
         // Check if response is successful
         if (!response.ok) {
@@ -44,24 +49,26 @@ async function getAccessToken(code) {
 
         // Parse response body as JSON
         const responseBody = await response.json();
-        
-        // Log response body to inspect token
-        console.log('Response body:', responseBody);
-        
+
         // Store access token in local storage
         localStorage.setItem('access_token', responseBody.access_token);
-        
-        // Optionally return the access token
+
+        // Return the access token
         return responseBody.access_token;
     } catch (error) {
         console.error('Error obtaining access token:', error);
-        throw error; // Rethrow error for handling by caller
+        throw error;
     }
 }
 
-// Call the function with sample code to trigger the process
-getAccessToken('sample_code');
-
+// Function to calculate SHA-256 hash
+async function sha256(plain) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => String.fromCharCode(b)).join('');
+}
 
 // Function to handle obtaining access token and fetching user profile
 async function handleAccessToken() {
@@ -72,7 +79,7 @@ async function handleAccessToken() {
 
     if (code) {
         // If an authorization code is found, proceed with obtaining the access token
-        const accessToken = await getAccessToken(clientId, code, redirectUri);
+        const accessToken = await getAccessToken(code, clientId, redirectUri);
         spotifyToken = accessToken; // Assign the token to the global variable
         const profile = await fetchProfile();
         populateUI(profile);
@@ -152,17 +159,9 @@ function redirectToAuthCodeFlow() {
     const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
     const scope = encodeURIComponent("user-read-private user-read-email");
     const state = encodeURIComponent("some-random-state-value"); // Optional: Include a state parameter for security
-    const codeChallenge = generateCodeChallenge(128);
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
+    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
 
     window.location.href = authUrl; // Redirect the user to the authorization URL
-}
-
-// Function to generate code challenge
-function generateCodeChallenge() {
-    // You can implement your code challenge generation logic here
-    // For simplicity, I'm returning a dummy value
-    return "dummy_code_challenge";
 }
 
 // Add an event listener to the login button
@@ -185,4 +184,3 @@ window.addEventListener('load', () => {
         handleAccessToken();
     }
 });
-``
