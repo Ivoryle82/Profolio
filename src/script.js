@@ -20,7 +20,7 @@ async function getAccessToken(code) {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
-                client_id: clientId, // Replace with your client ID
+                client_id: 'b4c01840ec424a1aa275703fc29b8fac', // Replace with your client ID
                 grant_type: 'authorization_code',
                 code,
                 redirect_uri: redirectUri, // Replace with your redirect URI
