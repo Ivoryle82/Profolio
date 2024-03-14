@@ -2,31 +2,40 @@
 let spotifyToken = null;
 
 // Function to get the access token
-async function getAccessToken(clientId, code, redirectUri) {
-    // Retrieve code verifier from local storage
-    let codeVerifier = localStorage.getItem('code_verifier');
-
-    // Define endpoint URL
-    const url = 'https://accounts.spotify.com/api/token';
-
-    // Define payload for POST request
-    const payload = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            client_id: clientId,
-            grant_type: 'authorization_code',
-            code,
-            redirect_uri: redirectUri,
-            code_verifier: codeVerifier,
-        }),
-    };
-
+async function getAccessToken(code) {
     try {
+        // Retrieve code verifier from local storage
+        let codeVerifier = localStorage.getItem('code_verifier');
+        
+        // Log code verifier to ensure it's retrieved correctly
+        console.log('Code verifier:', codeVerifier);
+    
+        // Define endpoint URL
+        const url = 'https://accounts.spotify.com/api/token';
+    
+        // Define payload for POST request
+        const payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                client_id: clientId, // Replace with your client ID
+                grant_type: 'authorization_code',
+                code,
+                redirect_uri: redirectUri, // Replace with your redirect URI
+                code_verifier: codeVerifier,
+            }),
+        };
+        
+        // Log payload before sending request
+        console.log('Request payload:', payload);
+
         // Send POST request to token endpoint
         const response = await fetch(url, payload);
+        
+        // Log response status to ensure request was successful
+        console.log('Response status:', response.status);
 
         // Check if response is successful
         if (!response.ok) {
@@ -35,10 +44,13 @@ async function getAccessToken(clientId, code, redirectUri) {
 
         // Parse response body as JSON
         const responseBody = await response.json();
-
+        
+        // Log response body to inspect token
+        console.log('Response body:', responseBody);
+        
         // Store access token in local storage
         localStorage.setItem('access_token', responseBody.access_token);
-
+        
         // Optionally return the access token
         return responseBody.access_token;
     } catch (error) {
@@ -46,6 +58,10 @@ async function getAccessToken(clientId, code, redirectUri) {
         throw error; // Rethrow error for handling by caller
     }
 }
+
+// Call the function with sample code to trigger the process
+getAccessToken('sample_code');
+
 
 // Function to handle obtaining access token and fetching user profile
 async function handleAccessToken() {
