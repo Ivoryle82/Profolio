@@ -58,7 +58,7 @@ async function handleAccessToken() {
     try {
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
-        const redirectUri = encodeURIComponent("https://ivoryle82.github.io/compatibility.html");
+        const redirectUri = encodeURIComponent("https://ivoryle82.github.io"); // html
         const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
 
         if (code) {
