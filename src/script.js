@@ -58,13 +58,14 @@ async function handleAccessToken() {
     try {
         const params = new URLSearchParams(window.location.search);
         const code = params.get("code");
-        const redirectUri = encodeURIComponent("https://ivoryle82.github.io"); // html
+        const redirectUri = encodeURIComponent("https://accounts.spotify.com"); // html
         const clientId = "b4c01840ec424a1aa275703fc29b8fac"; // Replace with your client id
 
         if (code) {
             // If an authorization code is found, proceed with obtaining the access token
             const accessToken = await getAccessToken(code, clientId, redirectUri);
             spotifyToken = accessToken; // Assign the token to the global variable
+            console.log("Spotify Token:", spotifyToken); // Print out the token
             const profile = await fetchProfile();
             populateUI(profile);
             // Create a playlist
