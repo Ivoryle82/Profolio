@@ -1,4 +1,4 @@
-const clientId = "871b7f49c7c341dd87868e3b53fca334";
+const clientId = "b4c01840ec424a1aa275703fc29b8fac";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
@@ -22,7 +22,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("redirect_uri", "https://ivoryle82.github.io/compatibility.html");
     params.append("scope", "user-read-private user-read-email");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
