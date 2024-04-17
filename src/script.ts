@@ -12,6 +12,7 @@ async function main(): Promise<void> {
         const playlist: any = await fetchPlaylist(accessToken);
         populateUI(profile);
         populatePlaylist(playlist);
+        populatePlaylistEmbed(playlist);
     }
 }
 
@@ -60,7 +61,7 @@ export async function getAccessToken(clientId: string, code: string): Promise<st
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "http://localhost:5173/compatibility.html");
+    params.append("redirect_uri", "https://ivoryle82.github.io/compatibility.html");
     params.append("code_verifier", verifier || ''); // Handle possible null or undefined value
 
     const result: Response = await fetch("https://accounts.spotify.com/api/token", {
@@ -112,16 +113,67 @@ function populatePlaylist(playlistData: any): void {
         const playlist: any = playlistData.items[0];
         const playlistName: string = playlist.name;
         const playlistDescription: string = playlist.description || '';
+        const ownerName: string = playlist.owner.display_name || 'Unknown';
+        const isPublic: boolean = playlist.public;
+        const followersCount: number = (playlist.owner.followers && playlist.owner.followers.total) || 0;
 
         // Create elements to display playlist information
         const playlistNameElement: HTMLElement = document.createElement("div");
         playlistNameElement.innerText = `Playlist Name: ${playlistName}`;
-        
+
         const playlistDescriptionElement: HTMLElement = document.createElement("div");
         playlistDescriptionElement.innerText = `Playlist Description: ${playlistDescription}`;
+
+        const ownerElement: HTMLElement = document.createElement("div");
+        ownerElement.innerText = `Owner: ${ownerName}`;
+
+        const publicStatusElement: HTMLElement = document.createElement("div");
+        publicStatusElement.innerText = `Public: ${isPublic ? 'Yes' : 'No'}`;
+
+        const followersElement: HTMLElement = document.createElement("div");
+        followersElement.innerText = `Followers: ${followersCount}`;
 
         // Append elements to playlist container
         playlistContainer.appendChild(playlistNameElement);
         playlistContainer.appendChild(playlistDescriptionElement);
+        playlistContainer.appendChild(ownerElement);
+        playlistContainer.appendChild(publicStatusElement);
+        playlistContainer.appendChild(followersElement);
+
+        // Display tracks
+        if (playlist.tracks && playlist.tracks.items) {
+            const tracksList: HTMLElement = document.createElement("ul");
+            playlist.tracks.items.forEach((trackItem: any) => {
+                const trackName: string = trackItem.track.name;
+                const trackElement: HTMLElement = document.createElement("li");
+                trackElement.innerText = trackName;
+                tracksList.appendChild(trackElement);
+            });
+            playlistContainer.appendChild(tracksList);
+        }
     }
 }
+
+async function populatePlaylistEmbed(playlistData: any): Promise<void> {
+    const playlistEmbedContainer: HTMLElement | null = document.getElementById("playlistEmbed");
+    if (playlistEmbedContainer && playlistData && playlistData.items && playlistData.items.length > 0) {
+        const playlist: any = playlistData.items[0];
+        const playlistId: string = playlist.id; // Assuming playlist ID is available in the playlist data
+
+        // Create the Spotify playlist embed iframe
+        const iframe: HTMLIFrameElement = document.createElement("iframe");
+        iframe.title = "My Spotify Playlist";
+        iframe.src = `https://open.spotify.com/embed/playlist/${playlistId}`;
+        iframe.width = "100%";
+        iframe.height = "380";
+        iframe.frameBorder = "0";
+        iframe.allow = "encrypted-media";
+
+        // Append the iframe to the playlist embed container
+        playlistEmbedContainer.appendChild(iframe);
+    }
+}
+
+// Usage: Call populatePlaylistEmbed function passing the playlist data
+// populatePlaylistEmbed(playlistData);
+
