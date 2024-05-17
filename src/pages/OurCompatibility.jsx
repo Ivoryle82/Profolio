@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
 import '../styles/ourcompatibility.css';
 import { getAccessToken, redirectToAuthCodeFlow, fetchProfile, fetchPlaylist, generateCodeVerifier,displayRecommendations, createPlaylist, displayRecommendationsAndAskCreatePlaylist} from '../services/spotifyApi';
 
@@ -122,7 +120,6 @@ function OurCompatibility() {
           </section>
         </main>
       </div>
-      <Footer />
     </>
   );
 }

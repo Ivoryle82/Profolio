@@ -23,10 +23,10 @@ function Slideshow({ images, slideIndex }) {
     display: 'block',
   };
 
-  const swipeNoteStyles = {
-    textAlign: 'center',
-    marginBottom: '10px',
-  };
+  // const swipeNoteStyles = {
+  //   textAlign: 'center',
+  //   marginBottom: '10px',
+  // };
 
   return (
     <div className="slideshow-container" style={slideshowStyles}>

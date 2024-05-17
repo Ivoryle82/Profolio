@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from '../components/Header'
 import '../styles/myspotify.css'
 
 function MySpotifyPlaylist() {
@@ -20,7 +19,7 @@ function MySpotifyPlaylist() {
 
         {/* Prompt and button to connect on Spotify */}
         <div className="spotify-connect">
-          <a href="http://localhost:3000/compatibility" className="spotify-button" id="spotify-login-button">
+          <a href="https://ivoryle82.github.io/compatibility" className="spotify-button" id="spotify-login-button">
             <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_CMYK_Black.png" alt="Spotify Logo" className="spotify-logo" /> Let's connect on Spotify
           </a>
         </div>
@@ -33,5 +32,5 @@ function MySpotifyPlaylist() {
 }
 
 export default MySpotifyPlaylist;
-
+// https://ivoryle82.github.io/
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/contact.css'; // Assuming you have a CSS file for styling
-import Header from '../components/Header'
 
 function Contact() {
   return (

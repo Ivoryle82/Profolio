@@ -1,6 +1,5 @@
 import React from 'react';
 import '../styles/about.css'; // Assuming you have a CSS file for styling
-import Header from '../components/Header'
 
 function About() {
   return (

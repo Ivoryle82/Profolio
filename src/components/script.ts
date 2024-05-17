@@ -36,7 +36,7 @@ export async function redirectToAuthCodeFlow(clientId: string): Promise<void> {
     const params: URLSearchParams = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "http://localhost:5173/compatibility.html");
+    params.append("redirect_uri", "https://ivoryle82.github.io/compatibility");
     params.append("scope", "user-read-private user-read-email");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -54,7 +54,7 @@ export async function getAccessToken(clientId: string, code: string, verifier: s
     tokenParams.append("client_id", clientId);
     tokenParams.append("grant_type", "authorization_code");
     tokenParams.append("code", code);
-    tokenParams.append("redirect_uri", "http://localhost:5173/compatibility.html");
+    tokenParams.append("redirect_uri", "https://ivoryle82.github.io/compatibility");
     tokenParams.append("code_verifier", verifier || ''); // Handle possible null or undefined value
 
     const result: Response = await fetch("https://accounts.spotify.com/api/token", {
