@@ -1,0 +1,96 @@
+.main-content {
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .ivory-le {
+    color: ivory;
+    font-size: 40px;
+    margin-bottom: 20px;
+  }
+  
+  #user-profile {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    padding: 30px;
+  }
+
+  .profile-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center items */
+  }
+  
+  .username {
+    font-weight: bold;
+  
+  }
+
+  .profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  #user-playlists {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    padding: 30px;
+  }
+
+  .playlists-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center items */
+  }
+
+  .playlist-iframe {
+    overflow: hidden;
+  }
+  
+  .track-list {
+    margin-top: 10px;
+  }
+  
+  #recommendations {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+    padding: 30px;
+  }
+
+  .recommendation-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Vertically center items */
+  }
+
+  .playlist-iframe {
+    overflow: hidden;
+  }
+  
+  .track-list {
+    margin-top: 10px;
+  }
+
+  .addplaylist-button {
+    display: inline-flex; /* Change display to inline-flex */
+    align-items: center; /* Align items vertically */
+    background-color: #1DB954;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 20px;
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease;
+  }
+
+  .addplaylist-button:hover {
+    background-color: #1ed760;
+}
+  
+  
+
+  

@@ -1,0 +1,33 @@
+
+/* Header styles */
+header {
+    background-color: rgb(3, 3, 3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 24px;
+    margin-top:20px;
+    margin-left:40px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  nav ul {
+    margin-top:20px;  
+    list-style-type: none;
+    padding: 0;
+  }
+
+    nav ul li { 
+        display: inline;
+        margin-right: 40px;
+    }
+
+  nav ul li a {
+      color: #ffffff;
+      text-decoration: none;
+  }
+

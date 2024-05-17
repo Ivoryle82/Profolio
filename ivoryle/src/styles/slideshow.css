@@ -1,0 +1,51 @@
+/* slideshow.css */
+
+/* Hide all slides by default */
+.mySlides {
+    display: none;
+  }
+  
+  /* Show the active slide */
+  .mySlides.fade {
+    display: block;
+  }
+  
+  /* Apply fade effect */
+  .fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Hide slides that are not active */
+  .hidden {
+    display: none;
+  }
+  
+  /* Add additional styling as needed */
+  .slideshow-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+    margin: auto;
+  }
+  
+  .swipe-note {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  

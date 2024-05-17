@@ -1,0 +1,37 @@
+/* about page */
+.about-content {
+    display: flex; /* Use flexbox to align items */
+    justify-content: center; /* Spread item out */
+    align-items: center; /* Center items vertically */
+    max-width: 800px; /* Limit the width of the content */
+    margin: 0 auto; /* Center the content horizontally */
+}
+
+.about-text {
+    font-family:Arial, Helvetica, sans-serif;
+    flex: 1 1 auto; /* Allow to grow and shrink */
+    text-align: left; /* Align text to the left */
+    padding-left: 40px; 
+    max-width: 50%;
+}
+
+/* Additional styles for the image */
+.about-image img {
+    max-width: 110%; /* Ensure the image doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+    padding-right: 40px;
+}
+
+.about-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.about-image {
+    flex: 1;
+    margin-left: auto; /* Push the image to the right */
+    margin-right: 30px; /* Adjust margin as needed */
+    max-width: 50%;
+}

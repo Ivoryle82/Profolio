@@ -1,0 +1,40 @@
+/* home.css */
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+
+/* home */
+.main-content {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Stack items vertically */
+    height: 100vh; /* Full height of viewport */
+    max-width: 1000px;  
+    margin: 0 auto; /* Center horizontally */
+}
+
+.intro {
+    font-family: 'Proxima Nova', sans-serif;
+    font-size: 20px;
+    margin-top: 200px; 
+}
+
+h1 {
+    font-family: 'Cinzel', sans-serif;
+    font-size: 80px ; /* Increase the font size */
+    margin-top: 0px; /* Reduce the top margin */
+}
+
+@keyframes slideInFromBottom {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* home */
+.main-content h1 {
+    animation: slideInFromBottom 1s ease-out; /* Adjust animation duration and timing function as needed */
+}
