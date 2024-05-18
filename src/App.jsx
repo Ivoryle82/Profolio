@@ -20,12 +20,12 @@ function App() {
       <div style={appStyles}> {/* Apply styles directly to this div */}
         <Header/>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/myphotos" element={<MyPhotos />} />
-          <Route path="/myspotify" element={<MySpotify />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/compatibility" element={<OurCompatibility />} />
+          <Route path="/Profolio" element={<Home />} />
+          <Route path="/Profolio/myphotos" element={<MyPhotos />} />
+          <Route path="/Profolio/myspotify" element={<MySpotify />} />
+          <Route path="/Profolio/about" element={<About />} />
+          <Route path="/Profolio/contact" element={<Contact />} />
+          <Route path="/Profolio/compatibility" element={<OurCompatibility />} />
         </Routes>
         <Footer />
       </div>
