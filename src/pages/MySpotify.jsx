@@ -24,9 +24,6 @@ function MySpotifyPlaylist() {
           </a>
         </div>
       </main>
-      <footer>
-        <p>&copy; 2024 QuaMatBong. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
