@@ -4,7 +4,9 @@ import '../styles/header.css'
 function Header() {
   return (
     <header>
-        <div className="logo">quamatbong</div>
+        <div class="logo">
+            <a href="/">quamatbong</a>
+        </div>  
         <nav>
           <ul>
             <li><a href="about">About Me</a></li>

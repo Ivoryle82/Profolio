@@ -5,13 +5,17 @@
 }
 
 .gallery-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: calc(33.33% - 20px); /* Three photos per row */
     margin: 10px;
     cursor: pointer; /* Add cursor pointer to indicate clickable */
 }
 
 .gallery-item img {
-    width: 100%;
+    max-width: 100%; /* Set max-width to control the image size */
+    max-height: 80%; /* Set a max-height to control the image size */
     display: block;
 }
 
@@ -43,7 +47,7 @@
 
 .photo-popup {
     position: relative;
-    background-color: #fefefe;
+    background-color: #000000;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -62,10 +66,12 @@
 .photo-popup img {
     width: 100%;
     height: auto;
+    max-width: 80%; /* Set max-width to control the image size */
+    max-height: 60%; /* Set a max-height to control the image size */
 }
 
 .popup-note {
-    font-family: 'Times New Roman', Times, serif;
+    /* font-family: 'Times New Roman', Times, serif; */
     font-size: 20px;
     color: #070707;
     padding: 10px 10px;

@@ -9,10 +9,12 @@ header {
   
   .logo {
     font-size: 24px;
-    margin-top:20px;
-    margin-left:40px;
-    color: #fff;
-    text-decoration: none;
+    margin-left: 40px;
+  }
+  
+  .logo a {
+    color: #fff; /* Change the text color to white */
+    text-decoration: none; /* Remove underline */
   }
   
   nav ul {
