@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -16,16 +16,16 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Profolio">
       <div style={appStyles}> {/* Apply styles directly to this div */}
-        <Header/>
+        <Header />
         <Routes>
-          <Route path="/Profolio" element={<Home />} />
-          <Route path="/Profolio/myphotos" element={<MyPhotos />} />
-          <Route path="/Profolio/myspotify" element={<MySpotify />} />
-          <Route path="/Profolio/about" element={<About />} />
-          <Route path="/Profolio/contact" element={<Contact />} />
-          <Route path="/Profolio/compatibility" element={<OurCompatibility />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/myphotos" element={<MyPhotos />} />
+          <Route path="/myspotify" element={<MySpotify />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/compatibility" element={<OurCompatibility />} />
         </Routes>
         <Footer />
       </div>
